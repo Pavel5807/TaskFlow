@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using TaskFlow.Tasks.Domain.AggregateModels.TaskAggregate;
 
@@ -16,6 +17,12 @@ public class TaskRepository : ITaskRepository
     public async System.Threading.Tasks.Task AddAsync(Task task)
     {
         await _context.Tasks.AddAsync(task);
+    }
+
+    public async System.Threading.Tasks.Task<IEnumerable<Task?>> GetAllAsync()
+    {
+        return await _context.Tasks.Include(task => task.History)
+            .Include(task => task.Items).ToListAsync();
     }
 
     public async System.Threading.Tasks.Task<Task?> GetByIdAsync(Guid id)
