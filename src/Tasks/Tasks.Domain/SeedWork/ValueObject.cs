@@ -1,6 +1,3 @@
 namespace TaskFlow.Tasks.Domain.Seedwork;
 
-public abstract class ValueObject
-{
-
-}
+public abstract class ValueObject { }

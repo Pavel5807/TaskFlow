@@ -5,14 +5,12 @@ namespace TaskFlow.Tasks.Domain.AggregateModels.TaskAggregate;
 public class Task : AggregateRoot
 {
     private Guid _id;
-    private string _header;
-    private ICollection<TaskItem> _items;
-    private ICollection<TaskHistory> _history;
 
-    public Guid Id { get => _id; private set => _id = value; }
-    public string Header { get; set; }
-    public IEnumerable<TaskItem> Items { get; set; }
-    public IEnumerable<TaskHistory> History { get; set; }
+    private string _header;
+
+    private ICollection<TaskItem> _items;
+
+    private ICollection<TaskHistory> _history;
 
     public Task(Guid id, string header)
     {
@@ -21,6 +19,14 @@ public class Task : AggregateRoot
         _items = [];
         _history = [];
     }
+
+    public Guid Id { get => _id; private set => _id = value; }
+
+    public string Header { get => _header; private set => _header = value; }
+
+    public IEnumerable<TaskItem> Items { get => _items; }
+
+    public IEnumerable<TaskHistory> History { get => _history; }
 
     public void AddItem(string description)
     {

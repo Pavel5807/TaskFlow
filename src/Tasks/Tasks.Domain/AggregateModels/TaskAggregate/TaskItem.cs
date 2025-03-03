@@ -5,13 +5,17 @@ namespace TaskFlow.Tasks.Domain.AggregateModels.TaskAggregate;
 public class TaskItem : Entity
 {
     private Guid _id;
+
     private string _description;
+
     private bool _isCompleted;
 
-    private Task _taskId;
-
-    public Guid Id { get; set; }
-    public Task TaskId { get; set; }
+    protected TaskItem()
+    {
+        _id = Guid.Empty;
+        _description = string.Empty;
+        _isCompleted = false;
+    }
 
     public TaskItem(string description)
     {
@@ -19,12 +23,18 @@ public class TaskItem : Entity
         _isCompleted = false;
     }
 
+    public Guid Id { get => _id; private set => _id = value; }
+
+    public string Description { get => _description; private set => _description = value; }
+
+    public bool IsCompleted { get => _isCompleted; private set => _isCompleted = value; }
+
     public void Complete()
     {
         _isCompleted = true;
     }
 
-    internal void UpdateDescription(string description)
+    public void UpdateDescription(string description)
     {
         _description = description;
     }

@@ -4,13 +4,17 @@ namespace TaskFlow.Tasks.Domain.AggregateModels.TaskAggregate;
 
 public class TaskHistory : ValueObject
 {
-    private Task _taskId;
-    private readonly string action;
+    private string _action;
 
-    public Task TaskId { get; set; }
+    protected TaskHistory()
+    {
+        _action = string.Empty;
+    }
 
     public TaskHistory(string action)
     {
-        this.action = action;
+        _action = action;
     }
+
+    public string Action { get => _action; private set => _action = value; }
 }
