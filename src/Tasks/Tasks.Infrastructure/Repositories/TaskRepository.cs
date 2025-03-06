@@ -19,6 +19,11 @@ public class TaskRepository : ITaskRepository
         await _context.Tasks.AddAsync(task);
     }
 
+    public void Delete(Task task)
+    {
+        _context.Remove(task);
+    }
+
     public async System.Threading.Tasks.Task<IEnumerable<Task>> GetAllAsync()
     {
         return await _context.Tasks.Include(task => task.History)

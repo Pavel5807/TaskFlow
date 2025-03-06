@@ -21,7 +21,7 @@ public class DeleteTaskComandHandler : IRequestHandler<DeleteTaskComand, IRespon
             return new NotFoundResponse();
         }
 
-        await _repository.DeleteAsync(task);
+        _repository.Delete(task);
         await _repository.SaveAsync();
 
         return new DeleteTaskResponse();
