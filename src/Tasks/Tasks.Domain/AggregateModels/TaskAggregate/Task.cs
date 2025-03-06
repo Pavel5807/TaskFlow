@@ -36,9 +36,14 @@ public class Task : AggregateRoot
         AddHistory("Item was added");
     }
 
-    public void EditItem(int indexItem, string description)
+    public void EditHeader(string header)
     {
-        var item = _items.ElementAtOrDefault(indexItem) ?? throw new Exception();
+        _header = header;
+    }
+
+    public void EditItem(Guid id, string description)
+    {
+        var item = _items.FirstOrDefault(item => item.Id == id) ?? throw new Exception();
         item.UpdateDescription(description);
 
         AddHistory("Item was changed");

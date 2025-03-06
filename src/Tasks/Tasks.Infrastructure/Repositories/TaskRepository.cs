@@ -19,7 +19,7 @@ public class TaskRepository : ITaskRepository
         await _context.Tasks.AddAsync(task);
     }
 
-    public async System.Threading.Tasks.Task<IEnumerable<Task?>> GetAllAsync()
+    public async System.Threading.Tasks.Task<IEnumerable<Task>> GetAllAsync()
     {
         return await _context.Tasks.Include(task => task.History)
             .Include(task => task.Items).ToListAsync();
