@@ -1,20 +1,25 @@
-using System;
 using MediatR;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using TaskFlow.Tasks.API.Application.Comands;
+using TaskFlow.Tasks.API.Application.Models;
 using TaskFlow.Tasks.Domain.AggregateModels.TaskAggregate;
+using TaskFlow.Tasks.Infrastructure;
 using TaskFlow.Tasks.Infrastructure.Repositories;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+builder.Services.AddDbContext<TaskDbContext>(config => config.UseNpgsql("Host=localhost;Port=5432;Database=TasksDb;Username=admin;Password=123", b => b.MigrationsAssembly("Tasks.Infrastructure")));
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(Program).Assembly));
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 var tasksApi = app.MapGroup("/api/tasks");
 tasksApi.MapPost("/", CreateTask);
@@ -25,33 +30,49 @@ tasksApi.MapDelete("/{id}", DeleteTaskById);
 
 app.Run();
 
-async System.Threading.Tasks.Task<IResult> CreateTask([FromBody] CreateTaskComand comand, [FromServices] IMediator mediator)
+async Task<IResult> CreateTask([FromBody] CreateTaskComand comand, [FromServices] IMediator mediator)
 {
-    await mediator.Send(comand);
+    var result = await mediator.Send(comand);
 
-    return TypedResults.Ok();
+    return result.ToResult();
 }
 
-async System.Threading.Tasks.Task<IResult> GetAllTasks([FromServices] IMediator mediator)
+async Task<IResult> GetAllTasks([FromServices] IMediator mediator)
 {
     var comand = new GetAllTasksComand();
 
     var result = await mediator.Send(comand);
 
-    return TypedResults.Ok();
+    return result.ToResult();
 }
 
-System.Threading.Tasks.Task<IResult> GetTaskById(Guid id)
+async Task<IResult> GetTaskById(Guid id, IMediator mediator)
 {
-    throw new NotImplementedException();
+    var comand = new GetTaskByIdComand()
+    {
+        Id = id
+    };
+
+    var result = await mediator.Send(comand);
+
+    return result.ToResult();
 }
 
-System.Threading.Tasks.Task<IResult> UpdateTaskById(Guid id)
+async Task<IResult> UpdateTaskById(UpdateTaskComand comand, IMediator mediator)
 {
-    throw new NotImplementedException();
+    var result = await mediator.Send(comand);
+
+    return result.ToResult();
 }
 
-System.Threading.Tasks.Task<IResult> DeleteTaskById(Guid id)
+async Task<IResult> DeleteTaskById(Guid id, IMediator mediator)
 {
-    throw new NotImplementedException();
+    var comand = new DeleteTaskComand()
+    {
+        Id = id
+    };
+
+    var result = await mediator.Send(comand);
+
+    return result.ToResult();
 }

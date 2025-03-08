@@ -13,7 +13,7 @@ public class UpdateTaskComandHandler : IRequestHandler<UpdateTaskComand, IRespon
         _repository = repository;
     }
 
-    public async System.Threading.Tasks.Task<IResponse> Handle(UpdateTaskComand request, CancellationToken cancellationToken)
+    public async Task<IResponse> Handle(UpdateTaskComand request, CancellationToken cancellationToken)
     {
         var task = await _repository.GetByIdAsync(request.Id);
         if (task is null)
@@ -26,11 +26,11 @@ public class UpdateTaskComandHandler : IRequestHandler<UpdateTaskComand, IRespon
             task.EditHeader(request.Header);
         }
 
-        foreach (var item in request.Items)
+        foreach (var item in request.Items ?? [])
         {
             task.EditItem(item.Id, item.Description);
         }
 
-        return new UpdateTaskResponse();                       
+        return new OkResponse();                       
     }
 }

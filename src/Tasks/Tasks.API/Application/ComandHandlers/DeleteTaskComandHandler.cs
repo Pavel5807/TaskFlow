@@ -13,7 +13,7 @@ public class DeleteTaskComandHandler : IRequestHandler<DeleteTaskComand, IRespon
         _repository = repository;
     }
 
-    public async System.Threading.Tasks.Task<IResponse> Handle(DeleteTaskComand request, CancellationToken cancellationToken)
+    public async Task<IResponse> Handle(DeleteTaskComand request, CancellationToken cancellationToken)
     {
         var task = await _repository.GetByIdAsync(request.Id);
         if (task is null)
@@ -24,6 +24,6 @@ public class DeleteTaskComandHandler : IRequestHandler<DeleteTaskComand, IRespon
         _repository.Delete(task);
         await _repository.SaveAsync();
 
-        return new DeleteTaskResponse();
+        return new OkResponse();
     }
 }

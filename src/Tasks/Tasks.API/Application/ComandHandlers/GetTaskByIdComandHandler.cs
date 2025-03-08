@@ -1,5 +1,6 @@
 using System.Threading;
 using MediatR;
+using TaskFlow.Tasks.API.Application.Models;
 using TaskFlow.Tasks.Domain.AggregateModels.TaskAggregate;
 
 namespace TaskFlow.Tasks.API.Application.Comands;
@@ -13,7 +14,7 @@ public class GetTaskByIdComandHandler : IRequestHandler<GetTaskByIdComand, IResp
         _repository = repository;
     }
 
-    public async System.Threading.Tasks.Task<IResponse> Handle(GetTaskByIdComand request, CancellationToken cancellationToken)
+    public async Task<IResponse> Handle(GetTaskByIdComand request, CancellationToken cancellationToken)
     {
         var task = await _repository.GetByIdAsync(request.Id);
         if (task is null)
@@ -21,9 +22,9 @@ public class GetTaskByIdComandHandler : IRequestHandler<GetTaskByIdComand, IResp
             return new NotFoundResponse();
         }
 
-        return new GetTaskByIdResponse()
+        return new OkObjectResponse<TaskDTO>()
         {
-            Task = task.ToDTO()
+            Value = task.ToDTO()
         };
     }
 }

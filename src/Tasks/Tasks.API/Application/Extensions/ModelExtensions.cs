@@ -1,10 +1,9 @@
-using System.Linq;
 using TaskFlow.Tasks.API.Application.Models;
-using TaskFlow.Tasks.Domain.AggregateModels.TaskAggregate;
+using TaskAggregate = TaskFlow.Tasks.Domain.AggregateModels.TaskAggregate;
 
 public static class ModelExtensions
 {
-    public static TaskDTO ToDTO(this Task task)
+    public static TaskDTO ToDTO(this TaskAggregate.Task task)
     {
         return new()
         {
@@ -15,15 +14,16 @@ public static class ModelExtensions
         };
     }
 
-    public static TaskItemDTO ToDTO(this TaskItem item)
+    public static TaskItemDTO ToDTO(this TaskAggregate.TaskItem item)
     {
         return new()
         {
+            Id = item.Id,
             Description = item.Description
         };
     }
 
-    public static TaskHistoryDTO ToDTO(this TaskHistory history)
+    public static TaskHistoryDTO ToDTO(this TaskAggregate.TaskHistory history)
     {
         return new()
         {

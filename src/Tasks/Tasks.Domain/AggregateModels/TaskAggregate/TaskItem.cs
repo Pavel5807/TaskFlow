@@ -10,12 +10,7 @@ public class TaskItem : Entity
 
     private bool _isCompleted;
 
-    protected TaskItem()
-    {
-        _id = Guid.Empty;
-        _description = string.Empty;
-        _isCompleted = false;
-    }
+    protected TaskItem() { }
 
     public TaskItem(string description)
     {

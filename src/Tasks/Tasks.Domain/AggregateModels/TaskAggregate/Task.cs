@@ -12,9 +12,8 @@ public class Task : AggregateRoot
 
     private ICollection<TaskHistory> _history;
 
-    public Task(Guid id, string header)
+    public Task(string header)
     {
-        _id = id;
         _header = header;
         _items = [];
         _history = [];

@@ -1,0 +1,11 @@
+.dockerignore
+.git
+.gitignore
+.vscode
+docker-compose*.yml
+*.md
+**/bin/
+**/obj/
+**/node_modules/
+**/bower_components/
+**/wwwroot/lib/

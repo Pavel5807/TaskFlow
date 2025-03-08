@@ -1,12 +1,10 @@
-using System.Linq;
-using System.Threading;
 using MediatR;
 using TaskFlow.Tasks.API.Application.Models;
 using TaskFlow.Tasks.Domain.AggregateModels.TaskAggregate;
 
 namespace TaskFlow.Tasks.API.Application.Comands;
 
-public class GetAllTasksComandHandler : IRequestHandler<GetAllTasksComand, GetAllTasksResponse>
+public class GetAllTasksComandHandler : IRequestHandler<GetAllTasksComand, IResponse>
 {
     private readonly ITaskRepository _repository;
 
@@ -15,13 +13,13 @@ public class GetAllTasksComandHandler : IRequestHandler<GetAllTasksComand, GetAl
         _repository = repository;
     }
 
-    public async System.Threading.Tasks.Task<GetAllTasksResponse> Handle(GetAllTasksComand request, CancellationToken cancellationToken)
+    public async Task<IResponse> Handle(GetAllTasksComand request, CancellationToken cancellationToken)
     {
         var tasks = await _repository.GetAllAsync();
 
-        return new GetAllTasksResponse()
+        return new OkObjectResponse<IEnumerable<TaskDTO>>()
         {
-            Tasks = tasks.Select(task => task.ToDTO())
+            Value = tasks.Select(task => task.ToDTO())
         };
     }
 }
