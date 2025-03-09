@@ -2,9 +2,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAuthentication(builder.Configuration);
 builder.Services.AddAuthorization();
-builder.Services.AddDbContext(builder.Configuration);
 builder.Services.AddMediatR();
 builder.Services.AddOpenApi();
+
+builder.Services.AddDbContext(builder.Configuration);
+builder.Services.AddControllers();
 
 var app = builder.Build();
 

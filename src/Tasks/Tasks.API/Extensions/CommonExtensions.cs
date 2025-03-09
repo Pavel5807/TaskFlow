@@ -78,6 +78,8 @@ public static class CommonExtensions
 
     public static IServiceCollection AddOpenApi(this IServiceCollection services)
     {
+        services.AddEndpointsApiExplorer();
+        
         services.AddSwaggerGen();
 
         return services;

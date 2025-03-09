@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskFlow.Tasks.API.Application.Comands;
 
@@ -15,6 +16,7 @@ public class TasksController : ControllerBase
         _mediator = mediator;
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<IResult> CreateTask(CreateTaskComand comand)
     {
@@ -23,6 +25,7 @@ public class TasksController : ControllerBase
         return result.ToResult();
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<IResult> GetAllTasks()
     {
@@ -33,6 +36,7 @@ public class TasksController : ControllerBase
         return result.ToResult();
     }
 
+    [Authorize]
     [HttpGet("/{id}")]
     public async Task<IResult> GetTaskById(Guid id)
     {
@@ -46,6 +50,7 @@ public class TasksController : ControllerBase
         return result.ToResult();
     }
 
+    [Authorize]
     [HttpPut]
     public async Task<IResult> UpdateTaskById(UpdateTaskComand comand)
     {
@@ -54,6 +59,7 @@ public class TasksController : ControllerBase
         return result.ToResult();
     }
 
+    [Authorize]
     [HttpDelete("/{id}")]
     public async Task<IResult> DeleteTaskById(Guid id)
     {
