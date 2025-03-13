@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  postgres:
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=123
+    ports:
+      - 5432:5432
+
+  identity-api:
+    environment:
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=123
+    ports:
+      - 5001:8080

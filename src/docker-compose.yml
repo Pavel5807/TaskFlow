@@ -3,19 +3,9 @@ version: '3.8'
 services:
   postgres:
     image: postgres:16
-    environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=123
-    ports:
-      - 5432:5432
     container_name: postgres
 
   identity-api:
     image: quay.io/keycloak/keycloak:26.1
-    environment:
-      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
-      - KC_BOOTSTRAP_ADMIN_PASSWORD=123
-    ports:
-      - 8080:8080
     container_name: identity.api
     command: [ "start-dev" ]

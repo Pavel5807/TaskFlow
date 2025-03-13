@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using TaskFlow.Tasks.Domain.AggregateModels.TaskAggregate;
 using TaskFlow.Tasks.Infrastructure;
 using TaskFlow.Tasks.Infrastructure.Repositories;
@@ -9,6 +9,13 @@ public static class CommonExtensions
 {
     public static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
+        // NOTE: backend
+        // "Identity": {
+        //   "Audience": "...",
+        //   "Authority": "..."
+        // }
+
+        // NOTE: frontend
         // "Identity": {
         //   "Authority": "...",
         //   "ClientId": "...",
@@ -26,33 +33,24 @@ public static class CommonExtensions
 
         var authenticationBuilder = services.AddAuthentication(options =>
         {
-            options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         });
 
-        authenticationBuilder.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
-
         var authority = identitySection.GetValue<string>("Authority") ?? throw new Exception();
-        var clientId = identitySection.GetValue<string>("ClientId") ?? throw new Exception();
-        var clientSecret = identitySection.GetValue<string>("ClientSecret") ?? throw new Exception();
-        var responseType = identitySection.GetValue<string>("ResponseType") ?? throw new Exception();
-        var callbackPath = identitySection.GetValue<string>("CallbackPath") ?? throw new Exception();
+        var audience = identitySection.GetValue<string>("Audience") ?? throw new Exception();
 
-        authenticationBuilder.AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
+        authenticationBuilder.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
         {
             options.Authority = authority;
-            options.ClientId = clientId;
-            options.ClientSecret = clientSecret;
-            options.ResponseType = responseType;
-            options.CallbackPath = callbackPath;
-
-            options.SaveTokens = true;
-
+            options.Audience = audience;
             options.RequireHttpsMetadata = false;
-
-            options.Scope.Add("openid");
-            options.Scope.Add("profile");
-            options.Scope.Add("email");
+            options.TokenValidationParameters = new TokenValidationParameters()
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true
+            };
         });
 
         return services;
@@ -79,7 +77,7 @@ public static class CommonExtensions
     public static IServiceCollection AddOpenApi(this IServiceCollection services)
     {
         services.AddEndpointsApiExplorer();
-        
+
         services.AddSwaggerGen();
 
         return services;
