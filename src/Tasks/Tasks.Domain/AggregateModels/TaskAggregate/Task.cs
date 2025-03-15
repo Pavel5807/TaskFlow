@@ -38,6 +38,8 @@ public class Task : AggregateRoot
     public void EditHeader(string header)
     {
         _header = header;
+
+        AddHistory("Task was changed");
     }
 
     public void EditItem(Guid id, string description)
