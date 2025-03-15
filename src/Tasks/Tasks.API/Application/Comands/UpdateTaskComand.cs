@@ -7,7 +7,7 @@ namespace TaskFlow.Tasks.API.Application.Comands;
 
 public class UpdateTaskComand : IRequest<IResponse>
 {
-    public Guid Id { get; internal set; }
-    public string? Header { get; internal set; }
+    public Guid Id { get; set; }
+    public string? Header { get; set; }
     public IEnumerable<TaskItemDTO>? Items { get; set; }
 }
