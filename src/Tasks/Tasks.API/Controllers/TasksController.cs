@@ -37,7 +37,7 @@ public class TasksController : ControllerBase
     }
 
     [Authorize]
-    [HttpGet("/{id}")]
+    [HttpGet("{id}")]
     public async Task<IResult> GetTaskById(Guid id)
     {
         var comand = new GetTaskByIdComand()
@@ -60,7 +60,7 @@ public class TasksController : ControllerBase
     }
 
     [Authorize]
-    [HttpDelete("/{id}")]
+    [HttpDelete("{id}")]
     public async Task<IResult> DeleteTaskById(Guid id)
     {
         var comand = new DeleteTaskComand()

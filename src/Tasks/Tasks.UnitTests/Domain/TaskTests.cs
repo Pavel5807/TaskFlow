@@ -10,9 +10,8 @@ public class TaskTests
     public void Constructor_ShouldInitializeCorrectly()
     {
         // Arrange & Act
-        var taskId = Guid.NewGuid();
         var taskHeader = "Test task";
-        var task = new Task(taskId, taskHeader);
+        var task = new Task(taskHeader);
 
         // Assert
         Assert.Equal("Test task", task.Header);
@@ -24,9 +23,8 @@ public class TaskTests
     public void AddItem_ShouldAddNewTaskItemAndHistory()
     {
         // Arrange
-        var taskId = Guid.NewGuid();
         var taskHeader = "Test task";
-        var task = new Task(taskId, taskHeader);
+        var task = new Task(taskHeader);
 
         // Act
         task.AddItem("New item");
@@ -41,13 +39,12 @@ public class TaskTests
     public void EditItem_ShouldUpdateDescriptionAndAddHistory()
     {
         // Arrange
-        var taskId = Guid.NewGuid();
         var taskHeader = "Test task";
-        var task = new Task(taskId, taskHeader);
+        var task = new Task(taskHeader);
         task.AddItem("Initial description");
 
         // Act
-        task.EditItem(0, "Updated description");
+        task.EditItem(task.Items.ElementAt(0).Id, "Updated description");
 
         // Assert
         Assert.Equal("Updated description", task.Items.First().Description);
@@ -58,21 +55,19 @@ public class TaskTests
     public void EditItem_InvalidIndex_ShouldThrowException()
     {
         // Arrange
-        var taskId = Guid.NewGuid();
         var taskHeader = "Test task";
-        var task = new Task(taskId, taskHeader);
+        var task = new Task(taskHeader);
 
         // Act & Assert
-        Assert.Throws<Exception>(() => task.EditItem(99, "Invalid"));
+        Assert.Throws<Exception>(() => task.EditItem(Guid.NewGuid(), "Invalid"));
     }
 
     [Fact]
     public void RemoveItem_ShouldRemoveItemAndAddHistory()
     {
         // Arrange
-        var taskId = Guid.NewGuid();
         var taskHeader = "Test task";
-        var task = new Task(taskId, taskHeader);
+        var task = new Task(taskHeader);
         task.AddItem("To be removed");
 
         // Act
@@ -89,7 +84,7 @@ public class TaskTests
         // Arrange
         var taskId = Guid.NewGuid();
         var taskHeader = "Test task";
-        var task = new Task(taskId, taskHeader);
+        var task = new Task(taskHeader);
         task.AddItem("Task item");
 
         // Act
@@ -106,7 +101,7 @@ public class TaskTests
         // Arrange
         var taskId = Guid.NewGuid();
         var taskHeader = "Task with history";
-        var task = new Task(taskId, taskHeader);
+        var task = new Task(taskHeader);
 
         // Act & Assert
         // 1. Добавление элемента
@@ -115,7 +110,7 @@ public class TaskTests
         Assert.Equal("Item was added", task.History.Last().Action);
 
         // 2. Изменение элемента
-        task.EditItem(0, "Updated item");
+        task.EditItem(task.Items.ElementAt(0).Id, "Updated item");
         Assert.Equal(2, task.History.Count());
         Assert.Equal("Item was changed", task.History.Last().Action);
 
@@ -140,11 +135,11 @@ public class TaskTests
         // Arrange
         var taskId = Guid.NewGuid();
         var taskHeader = "Empty task";
-        var task = new Task(taskId, taskHeader);
+        var task = new Task(taskHeader);
 
         // Act & Assert
         // Попытка редактирования несуществующего элемента
-        Assert.Throws<Exception>(() => task.EditItem(0, "Invalid"));
+        Assert.Throws<Exception>(() => task.EditItem(Guid.NewGuid(), "Invalid"));
         Assert.Empty(task.History);
 
         // Попытка удаления несуществующего элемента
@@ -158,7 +153,7 @@ public class TaskTests
         // Arrange
         var taskId = Guid.NewGuid();
         var taskHeader = "Task History growth";
-        var task = new Task(taskId, taskHeader);
+        var task = new Task(taskHeader);
         var initialHistoryCount = task.History.Count();
 
         // Act & Assert

@@ -32,9 +32,8 @@ namespace TaskFlow.Tasks.Tests.Infrastucture
         public async System.Threading.Tasks.Task AddAsync_WhenTaskAdded_ShouldStoreInDatabase()
         {
             // Arrange
-            var taskId = Guid.NewGuid();
             var taskHeader = "Test Header";
-            var task = new Task(taskId, taskHeader);
+            var task = new Task(taskHeader);
 
             // Act
             await _repository.AddAsync(task);
@@ -50,20 +49,19 @@ namespace TaskFlow.Tasks.Tests.Infrastucture
         public async System.Threading.Tasks.Task GetByIdAsync_WhenTaskExists_ShouldReturnTaskWithItems()
         {
             // Arrange
-            var taskId = Guid.NewGuid();
             var taskHeader = "Test Header";
-            var task = new Task(taskId, taskHeader);
+            var task = new Task(taskHeader);
             task.AddItem("Item 1");
 
             await _context.Tasks.AddAsync(task);
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetByIdAsync(taskId);
+            var result = await _repository.GetByIdAsync(task.Id);
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(taskId, result.Id);
+            Assert.Equal(task.Id, result.Id);
             Assert.Single(result.Items);
         }
 
@@ -84,9 +82,8 @@ namespace TaskFlow.Tasks.Tests.Infrastucture
         public async System.Threading.Tasks.Task SaveAsync_WhenCalled_ShouldPersistChanges()
         {
             // Arrange
-            var taskId = Guid.NewGuid();
             var taskHeader = "Test Header";
-            var task = new Task(taskId, taskHeader);
+            var task = new Task(taskHeader);
             
             await _repository.AddAsync(task);
 

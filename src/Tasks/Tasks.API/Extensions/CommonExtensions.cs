@@ -1,13 +1,16 @@
+using System.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using TaskFlow.Tasks.Domain.AggregateModels.TaskAggregate;
 using TaskFlow.Tasks.Infrastructure;
 using TaskFlow.Tasks.Infrastructure.Repositories;
 
 public static class CommonExtensions
 {
-    public static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddDefaultAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
         // NOTE: backend
         // "Identity": {
@@ -37,11 +40,11 @@ public static class CommonExtensions
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         });
 
-        var authority = identitySection.GetValue<string>("Authority") ?? throw new Exception();
-        var audience = identitySection.GetValue<string>("Audience") ?? throw new Exception();
-
         authenticationBuilder.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
         {
+            var authority = identitySection.GetValue<string>("Authority") ?? throw new Exception();
+            var audience = identitySection.GetValue<string>("Audience") ?? throw new Exception();
+
             options.Authority = authority;
             options.Audience = audience;
             options.RequireHttpsMetadata = false;
@@ -74,12 +77,144 @@ public static class CommonExtensions
         return services;
     }
 
-    public static IServiceCollection AddOpenApi(this IServiceCollection services)
+    public static IServiceCollection AddDefaultOpenApi(this IServiceCollection services, IConfiguration configuration)
     {
+        // "OpenApi": {
+        //   "Document": {
+        //     "Title": "...",
+        //     "Description": "...",
+        //     "Version": "..."
+        //   }
+        // }
+
+        // "Identity": {
+        //   "Authority": "...",
+        //   "Scopes": {
+        //     "...": "..."
+        //   }
+        // }
+
+        var openApiSection = configuration.GetSection("OpenApi");
+
+        if (openApiSection.Exists() is false)
+        {
+            return services;
+        }
+
         services.AddEndpointsApiExplorer();
 
-        services.AddSwaggerGen();
+        services.AddSwaggerGen(options =>
+        {
+            var document = openApiSection.GetRequiredSection("Document");
+
+            var version = document.GetValue<string>("Version");
+            var title = document.GetValue<string>("Title");
+            var description = document.GetValue("Description", "");
+
+            options.SwaggerDoc(version, new OpenApiInfo
+            {
+                Title = title,
+                Version = version,
+                Description = description
+            });
+
+
+            var identitySection = configuration.GetSection("Identity");
+
+            if (identitySection.Exists() is false)
+            {
+                return;
+            }
+
+            var authority = identitySection.GetValue<string>("Authority");
+            var scopeDefinitions = identitySection.GetRequiredSection("Scopes").GetChildren();
+
+            var authorizationUrl = new Uri($"{authority}/protocol/openid-connect/auth");
+            var tokenUrl = new Uri($"{authority}/protocol/openid-connect/token");
+            var definedScopes = scopeDefinitions.ToDictionary(section => section.Key, section => section.Value);
+
+            var securityScheme = new OpenApiSecurityScheme()
+            {
+                Type = SecuritySchemeType.OAuth2,
+                Flows = new OpenApiOAuthFlows()
+                {
+                    AuthorizationCode = new OpenApiOAuthFlow()
+                    {
+                        AuthorizationUrl = authorizationUrl,
+                        TokenUrl = tokenUrl,
+                        Scopes = definedScopes
+                    }
+                }
+            };
+
+            options.AddSecurityDefinition("oauth2", securityScheme);
+
+
+            var schemeReference = new OpenApiSecurityScheme()
+            {
+                Reference = new OpenApiReference()
+                {
+                    Id = "oauth2",
+                    Type = ReferenceType.SecurityScheme
+                }
+            };
+
+            var requiredScopes = scopeDefinitions
+                .Select(section => section.Key).ToList();
+
+            var securityRequirement = new OpenApiSecurityRequirement
+            {
+                { schemeReference, requiredScopes }
+            };
+
+            options.AddSecurityRequirement(securityRequirement);
+        });
 
         return services;
+    }
+
+    public static WebApplication UseOpenApi(this WebApplication app, IConfiguration configuration)
+    {
+        // "OpenApi": {
+        //   "Endpoint: {
+        //     "Name": 
+        //   },
+        //   "Auth": {
+        //     "ClientId": ..,
+        //     "AppName": ..
+        //   }
+        // }
+
+        var openApiSection = configuration.GetSection("OpenApi");
+
+        if (openApiSection.Exists() is false)
+        {
+            return app;
+        }
+
+        app.UseSwagger();
+        app.UseSwaggerUI(options =>
+        {
+            var endpointSection = openApiSection.GetRequiredSection("endpoint");
+            var name = endpointSection.GetValue<string>("Name");
+
+            options.SwaggerEndpoint("/swagger/v1/swagger.json", name);
+
+            var authSection = openApiSection.GetSection("Auth");
+            if (authSection.Exists() is false)
+            {
+                return;
+            }
+
+            var clientId = authSection.GetValue<string>("ClientId");
+            var clientSecret = authSection.GetValue<string>("ClientSecret");
+            options.OAuthClientId(clientId);
+            options.OAuthClientSecret(clientSecret);
+            options.OAuthUsePkce();
+        });
+
+        app.MapGet("/", () => Results.Redirect("/swagger")).ExcludeFromDescription();
+
+        return app;
     }
 }
