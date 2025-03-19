@@ -2478,6 +2478,12 @@ COPY public.group_attribute (id, name, value, group_id) FROM stdin;
 --
 
 COPY public.group_role_mapping (role_id, group_id) FROM stdin;
+1d60a318-de73-4278-97b0-7a043abff8e9	6a0d6928-19c9-4ba5-8791-a2412c90fb32
+2ad5b2b0-4137-4e42-8af5-df8b215fadb8	6a0d6928-19c9-4ba5-8791-a2412c90fb32
+1d60a318-de73-4278-97b0-7a043abff8e9	f91bbd76-551f-46ab-8e2b-f3584fd1725b
+2ad5b2b0-4137-4e42-8af5-df8b215fadb8	f91bbd76-551f-46ab-8e2b-f3584fd1725b
+e95b2cdf-0a74-48d4-8d20-f2f2f6de759c	f91bbd76-551f-46ab-8e2b-f3584fd1725b
+5962c687-7906-47db-9aa6-ce37d2d7f84c	f91bbd76-551f-46ab-8e2b-f3584fd1725b
 \.
 
 
@@ -2526,6 +2532,8 @@ COPY public.jgroups_ping (address, name, cluster_name, ip, coord) FROM stdin;
 --
 
 COPY public.keycloak_group (id, name, parent_group, realm_id, type) FROM stdin;
+6a0d6928-19c9-4ba5-8791-a2412c90fb32	developers	 	a3ade43b-1924-4f20-b0e0-9c9b991a47d2	0
+f91bbd76-551f-46ab-8e2b-f3584fd1725b	managers	 	a3ade43b-1924-4f20-b0e0-9c9b991a47d2	0
 \.
 
 
@@ -2615,6 +2623,10 @@ d8a170c2-5a8e-442a-b6c0-c3342858206c	0fa9a253-f928-44f4-96b7-a3ed2fd69ccf	t	${ro
 aeefdcc4-c96a-42d9-bb84-b745c86a55a3	5131c547-ba20-4a29-aef1-0d745a8a1ab1	t	${role_read-token}	read-token	a3ade43b-1924-4f20-b0e0-9c9b991a47d2	5131c547-ba20-4a29-aef1-0d745a8a1ab1	\N
 e263c424-b27d-4071-bf97-82fbb2c786e8	a3ade43b-1924-4f20-b0e0-9c9b991a47d2	f	${role_offline-access}	offline_access	a3ade43b-1924-4f20-b0e0-9c9b991a47d2	\N	\N
 c5584390-40bc-4545-a6ed-ff79398a4feb	a3ade43b-1924-4f20-b0e0-9c9b991a47d2	f	${role_uma_authorization}	uma_authorization	a3ade43b-1924-4f20-b0e0-9c9b991a47d2	\N	\N
+1d60a318-de73-4278-97b0-7a043abff8e9	6b0c849d-86ba-4ea4-90af-2d17c1c8314f	t		read_task	a3ade43b-1924-4f20-b0e0-9c9b991a47d2	6b0c849d-86ba-4ea4-90af-2d17c1c8314f	\N
+e95b2cdf-0a74-48d4-8d20-f2f2f6de759c	6b0c849d-86ba-4ea4-90af-2d17c1c8314f	t		create_task	a3ade43b-1924-4f20-b0e0-9c9b991a47d2	6b0c849d-86ba-4ea4-90af-2d17c1c8314f	\N
+2ad5b2b0-4137-4e42-8af5-df8b215fadb8	6b0c849d-86ba-4ea4-90af-2d17c1c8314f	t		update_task	a3ade43b-1924-4f20-b0e0-9c9b991a47d2	6b0c849d-86ba-4ea4-90af-2d17c1c8314f	\N
+5962c687-7906-47db-9aa6-ce37d2d7f84c	6b0c849d-86ba-4ea4-90af-2d17c1c8314f	t		delete_task	a3ade43b-1924-4f20-b0e0-9c9b991a47d2	6b0c849d-86ba-4ea4-90af-2d17c1c8314f	\N
 \.
 
 
@@ -2632,8 +2644,7 @@ COPY public.migration_model (id, version, update_time) FROM stdin;
 --
 
 COPY public.offline_client_session (user_session_id, client_id, offline_flag, "timestamp", data, client_storage_provider, external_client_id, version) FROM stdin;
-496d34ee-af8e-4b14-8fc6-dd041961785b	74033654-fcf1-4ebe-877d-25e96dcdd914	0	1742332472	{"authMethod":"openid-connect","redirectUri":"http://localhost:5001/admin/master/console/","notes":{"clientId":"74033654-fcf1-4ebe-877d-25e96dcdd914","iss":"http://localhost:5001/realms/master","startedAt":"1742332343","response_type":"code","level-of-authentication":"-1","code_challenge_method":"S256","nonce":"1fffbae4-6643-4e63-870e-1ccbcd4f3316","response_mode":"query","scope":"openid","userSessionStartedAt":"1742332343","redirect_uri":"http://localhost:5001/admin/master/console/","state":"51065cf4-19de-4870-84d7-2808929f8e64","code_challenge":"wvXWOWu8GhOKuHzqw5M7PTWtxlCKCOdp32SYApJNo2g"}}	local	local	3
-d2a4f489-0e76-4a54-af54-70d9f57f3809	5081130b-b692-4acc-8759-2504425efa0a	0	1742332606	{"authMethod":"openid-connect","redirectUri":"http://localhost:5002/swagger/oauth2-redirect.html","notes":{"clientId":"5081130b-b692-4acc-8759-2504425efa0a","scope":"openid profile","userSessionStartedAt":"1742332606","iss":"http://localhost:5001/realms/task-flow-realm","startedAt":"1742332606","response_type":"code","level-of-authentication":"-1","code_challenge_method":"S256","redirect_uri":"http://localhost:5002/swagger/oauth2-redirect.html","state":"V2VkIE1hciAxOSAyMDI1IDAwOjE2OjQxIEdNVCswMzAwICjQnNC+0YHQutCy0LAsINGB0YLQsNC90LTQsNGA0YLQvdC+0LUg0LLRgNC10LzRjyk=","code_challenge":"0sKNEBXxzRva70KWKiCpOOY_Y_7pGfg7P-M7JkM-c_4"}}	local	local	0
+b2c625b1-a7b7-4455-bb9f-8c9b4c17f8d1	74033654-fcf1-4ebe-877d-25e96dcdd914	0	1742417071	{"authMethod":"openid-connect","redirectUri":"http://localhost:5001/admin/master/console/","notes":{"clientId":"74033654-fcf1-4ebe-877d-25e96dcdd914","iss":"http://localhost:5001/realms/master","startedAt":"1742416104","response_type":"code","level-of-authentication":"-1","code_challenge_method":"S256","nonce":"98afc3ca-5bcf-42a6-8b16-5bae6acaa6ef","response_mode":"query","scope":"openid","userSessionStartedAt":"1742416104","redirect_uri":"http://localhost:5001/admin/master/console/","state":"80209393-26f6-4572-98c6-f27dda99a4b6","code_challenge":"qiiE-UJXFgyS-xLlh7YVj4vrewpjGHGwXepWpDLVMZ0"}}	local	local	7
 \.
 
 
@@ -2642,8 +2653,7 @@ d2a4f489-0e76-4a54-af54-70d9f57f3809	5081130b-b692-4acc-8759-2504425efa0a	0	1742
 --
 
 COPY public.offline_user_session (user_session_id, user_id, realm_id, created_on, offline_flag, data, last_session_refresh, broker_session_id, version) FROM stdin;
-496d34ee-af8e-4b14-8fc6-dd041961785b	bb4edd25-3fe3-49ee-9b9c-5b33edd67576	1739fb5b-3e74-44ff-bfea-37693723158e	1742332343	0	{"ipAddress":"172.18.0.1","authMethod":"openid-connect","rememberMe":false,"started":0,"notes":{"KC_DEVICE_NOTE":"eyJpcEFkZHJlc3MiOiIxNzIuMTguMC4xIiwib3MiOiJXaW5kb3dzIiwib3NWZXJzaW9uIjoiMTAiLCJicm93c2VyIjoiQ2hyb21lLzEzNC4wLjAiLCJkZXZpY2UiOiJPdGhlciIsImxhc3RBY2Nlc3MiOjAsIm1vYmlsZSI6ZmFsc2V9","AUTH_TIME":"1742332343","authenticators-completed":"{\\"3abef57b-b912-441c-97f8-13136f39c6e9\\":1742332343}"},"state":"LOGGED_IN"}	1742332472	\N	3
-d2a4f489-0e76-4a54-af54-70d9f57f3809	e41d3fde-0e87-498b-8efc-3d0ef2c6b0c9	a3ade43b-1924-4f20-b0e0-9c9b991a47d2	1742332606	0	{"ipAddress":"172.18.0.1","authMethod":"openid-connect","rememberMe":false,"started":0,"notes":{"KC_DEVICE_NOTE":"eyJpcEFkZHJlc3MiOiIxNzIuMTguMC4xIiwib3MiOiJXaW5kb3dzIiwib3NWZXJzaW9uIjoiMTAiLCJicm93c2VyIjoiQ2hyb21lLzEzNC4wLjAiLCJkZXZpY2UiOiJPdGhlciIsImxhc3RBY2Nlc3MiOjAsIm1vYmlsZSI6ZmFsc2V9","AUTH_TIME":"1742332606","authenticators-completed":"{\\"59814ff9-7d1a-479d-95b8-8f33e7d308d6\\":1742332606}"},"state":"LOGGED_IN"}	1742332606	\N	0
+b2c625b1-a7b7-4455-bb9f-8c9b4c17f8d1	bb4edd25-3fe3-49ee-9b9c-5b33edd67576	1739fb5b-3e74-44ff-bfea-37693723158e	1742416104	0	{"ipAddress":"172.18.0.1","authMethod":"openid-connect","rememberMe":false,"started":0,"notes":{"KC_DEVICE_NOTE":"eyJpcEFkZHJlc3MiOiIxNzIuMTguMC4xIiwib3MiOiJXaW5kb3dzIiwib3NWZXJzaW9uIjoiMTAiLCJicm93c2VyIjoiQ2hyb21lLzEzNC4wLjAiLCJkZXZpY2UiOiJPdGhlciIsImxhc3RBY2Nlc3MiOjAsIm1vYmlsZSI6ZmFsc2V9","AUTH_TIME":"1742416105","authenticators-completed":"{\\"3abef57b-b912-441c-97f8-13136f39c6e9\\":1742416104}"},"state":"LOGGED_IN"}	1742417071	\N	7
 \.
 
 
@@ -3528,6 +3538,8 @@ COPY public.user_consent_client_scope (user_consent_id, scope_id) FROM stdin;
 COPY public.user_entity (id, email, email_constraint, email_verified, enabled, federation_link, first_name, last_name, realm_id, username, created_timestamp, service_account_client_link, not_before) FROM stdin;
 bb4edd25-3fe3-49ee-9b9c-5b33edd67576	\N	ecb98caa-00fd-48b7-adf5-562334b6c266	f	t	\N	\N	\N	1739fb5b-3e74-44ff-bfea-37693723158e	admin	1742332300525	\N	0
 e41d3fde-0e87-498b-8efc-3d0ef2c6b0c9	5807keam.hi@gmail.com	5807keam.hi@gmail.com	t	t	\N	Павел	Зырянов	a3ade43b-1924-4f20-b0e0-9c9b991a47d2	pavel_zyryanov	1742332482829	\N	0
+27fb9261-0c4d-402c-8aff-0a4060ca1479	manager@gmail.com	manager@gmail.com	t	t	\N	\N	\N	a3ade43b-1924-4f20-b0e0-9c9b991a47d2	test_manager	1742416901868	\N	0
+a555cf40-2c3e-4724-a30d-7895c965c2d5	developer@gmail.com	developer@gmail.com	t	t	\N	\N	\N	a3ade43b-1924-4f20-b0e0-9c9b991a47d2	test_developer	1742416961264	\N	0
 \.
 
 
@@ -3568,6 +3580,9 @@ COPY public.user_federation_provider (id, changed_sync_period, display_name, ful
 --
 
 COPY public.user_group_membership (group_id, user_id, membership_type) FROM stdin;
+6a0d6928-19c9-4ba5-8791-a2412c90fb32	a555cf40-2c3e-4724-a30d-7895c965c2d5	UNMANAGED
+f91bbd76-551f-46ab-8e2b-f3584fd1725b	27fb9261-0c4d-402c-8aff-0a4060ca1479	UNMANAGED
+f91bbd76-551f-46ab-8e2b-f3584fd1725b	e41d3fde-0e87-498b-8efc-3d0ef2c6b0c9	UNMANAGED
 \.
 
 
@@ -3587,6 +3602,8 @@ COPY public.user_role_mapping (role_id, user_id) FROM stdin;
 67bd1f9b-d155-4294-9050-125f9a0ffbf8	bb4edd25-3fe3-49ee-9b9c-5b33edd67576
 3b8e6ac6-836c-4dda-a752-6f5a1dfb24c9	bb4edd25-3fe3-49ee-9b9c-5b33edd67576
 d1505096-51ce-4d3c-86ea-ded36a7aa46d	e41d3fde-0e87-498b-8efc-3d0ef2c6b0c9
+d1505096-51ce-4d3c-86ea-ded36a7aa46d	27fb9261-0c4d-402c-8aff-0a4060ca1479
+d1505096-51ce-4d3c-86ea-ded36a7aa46d	a555cf40-2c3e-4724-a30d-7895c965c2d5
 \.
 
 
