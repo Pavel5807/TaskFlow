@@ -2,6 +2,8 @@ version: '3.8'
 
 services:
   postgres:
+    volumes:
+      - ../tools/postgres:/docker-entrypoint-initdb.d
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=123
@@ -10,7 +12,12 @@ services:
 
   identity-api:
     environment:
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://postgres:5432/keycloak
+      - KC_DB_USERNAME=admin
+      - KC_DB_PASSWORD=123
       - KC_BOOTSTRAP_ADMIN_USERNAME=admin
       - KC_BOOTSTRAP_ADMIN_PASSWORD=123
     ports:
       - 5001:8080
+    command: [ "start-dev" ]

@@ -8,4 +8,5 @@ services:
   identity-api:
     image: quay.io/keycloak/keycloak:26.1
     container_name: identity.api
-    command: [ "start-dev" ]
+    depends_on:
+      - postgres
