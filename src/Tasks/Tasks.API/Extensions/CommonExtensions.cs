@@ -1,10 +1,9 @@
-using System.Security;
+using System.Security.Claims;
+using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using TaskFlow.Tasks.Domain.AggregateModels.TaskAggregate;
 using TaskFlow.Tasks.Infrastructure;
 using TaskFlow.Tasks.Infrastructure.Repositories;
 
@@ -54,6 +53,36 @@ public static class CommonExtensions
                 ValidateAudience = true,
                 ValidateLifetime = true
             };
+
+            options.Events = new JwtBearerEvents()
+            {
+                OnTokenValidated = context =>
+                {
+                    if (context.Principal?.Identity is not ClaimsIdentity identity)
+                    {
+                        return Task.CompletedTask;
+                    }
+
+                    var resourceAccess = context.Principal.FindFirst("resource_access")?.Value;
+                    if (string.IsNullOrEmpty(resourceAccess))
+                    {
+                        return Task.CompletedTask;
+                    }
+
+                    var resourceAccessObj = JsonDocument.Parse(resourceAccess);
+                    if (resourceAccessObj.RootElement.TryGetProperty("tasks-api", out var tasksApi) is false)
+                    {
+                        return Task.CompletedTask;
+                    }
+                    
+                    var roles = tasksApi.GetProperty("roles").EnumerateArray();
+                    foreach (var role in roles)
+                    {
+                        identity.AddClaim(new Claim(ClaimTypes.Role, role.GetString()!));
+                    }
+                    return Task.CompletedTask;
+                }
+            };
         });
 
         return services;
@@ -65,7 +94,7 @@ public static class CommonExtensions
 
         services.AddDbContext<TaskDbContext>(options => options.UseNpgsql(connectionString));
 
-        services.AddScoped<ITaskRepository, TaskRepository>();
+        services.AddScoped<TaskFlow.Tasks.Domain.AggregateModels.TaskAggregate.ITaskRepository, TaskRepository>();
 
         return services;
     }

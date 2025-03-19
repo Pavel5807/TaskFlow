@@ -2,6 +2,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDefaultAuthentication(builder.Configuration);
 builder.Services.AddAuthorization();
+
 builder.Services.AddDefaultOpenApi(builder.Configuration);
 
 builder.Services.AddMediatR();

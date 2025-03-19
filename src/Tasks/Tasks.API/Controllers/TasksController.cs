@@ -16,7 +16,7 @@ public class TasksController : ControllerBase
         _mediator = mediator;
     }
 
-    [Authorize]
+    [Authorize(Roles = "create_task")]
     [HttpPost]
     public async Task<IResult> CreateTask(CreateTaskComand comand)
     {
@@ -25,7 +25,7 @@ public class TasksController : ControllerBase
         return result.ToResult();
     }
 
-    [Authorize]
+    [Authorize(Roles = "read_task")]
     [HttpGet]
     public async Task<IResult> GetAllTasks()
     {
@@ -36,7 +36,7 @@ public class TasksController : ControllerBase
         return result.ToResult();
     }
 
-    [Authorize]
+    [Authorize(Roles = "read_task")]
     [HttpGet("{id}")]
     public async Task<IResult> GetTaskById(Guid id)
     {
@@ -50,7 +50,7 @@ public class TasksController : ControllerBase
         return result.ToResult();
     }
 
-    [Authorize]
+    [Authorize(Roles = "update_task")]
     [HttpPut]
     public async Task<IResult> UpdateTaskById(UpdateTaskComand comand)
     {
@@ -59,7 +59,7 @@ public class TasksController : ControllerBase
         return result.ToResult();
     }
 
-    [Authorize]
+    [Authorize(Roles = "delete_task")]
     [HttpDelete("{id}")]
     public async Task<IResult> DeleteTaskById(Guid id)
     {
