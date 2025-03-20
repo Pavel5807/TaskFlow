@@ -5,7 +5,7 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddDefaultOpenApi(builder.Configuration);
 
-builder.Services.AddMediatR();
+builder.Services.AddDefaultMediatR();
 builder.Services.AddDbContext(builder.Configuration);
 builder.Services.AddControllers();
 

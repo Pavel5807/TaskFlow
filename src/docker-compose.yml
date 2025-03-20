@@ -10,3 +10,13 @@ services:
     container_name: identity.api
     depends_on:
       - postgres
+
+  tasks-api:
+    image: tasks-flow/tasks.api:linux-1.0
+    build:
+      context: .
+      dockerfile: Tasks/Tasks.API/Dockerfile
+    container_name: tasks.api
+    depends_on:
+      - postgres
+      - identity-api

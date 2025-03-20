@@ -21,3 +21,14 @@ services:
     ports:
       - 5001:8080
     command: [ "start-dev" ]
+
+  tasks-api:
+    environment:
+      - ConnectionStrings__TasksDB=Host=postgres;Port=5432;Database=Tasks;Username=admin;Password=123
+      - OpenApi__Auth__Authority=http://localhost:5001/realms/task-flow-realm
+      - OpenApi__Auth__ClientSecret=qgdcKO2LJ8knahIMY8vlnciMjWFvkbhj
+      - Identity__Authority=http://identity-api:8080/realms/task-flow-realm
+      - Identity__ValidIssuers__0=http://localhost:5001/realms/task-flow-realm
+    ports:
+      - 5002:8080
+    
