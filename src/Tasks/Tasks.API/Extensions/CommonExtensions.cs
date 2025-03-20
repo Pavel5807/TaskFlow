@@ -43,6 +43,7 @@ public static class CommonExtensions
         {
             var authority = identitySection.GetValue<string>("Authority") ?? throw new Exception();
             var audience = identitySection.GetValue<string>("Audience") ?? throw new Exception();
+            var issuers = identitySection.GetSection("ValidIssuers").Get<string[]>() ?? [];
 
             options.Authority = authority;
             options.Audience = audience;
@@ -51,7 +52,8 @@ public static class CommonExtensions
             {
                 ValidateIssuer = true,
                 ValidateAudience = true,
-                ValidateLifetime = true
+                ValidateLifetime = true,
+                ValidIssuers = issuers
             };
 
             options.Events = new JwtBearerEvents()
@@ -74,7 +76,7 @@ public static class CommonExtensions
                     {
                         return Task.CompletedTask;
                     }
-                    
+
                     var roles = tasksApi.GetProperty("roles").EnumerateArray();
                     foreach (var role in roles)
                     {
@@ -99,7 +101,7 @@ public static class CommonExtensions
         return services;
     }
 
-    public static IServiceCollection AddMediatR(this IServiceCollection services)
+    public static IServiceCollection AddDefaultMediatR(this IServiceCollection services)
     {
         services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
@@ -148,15 +150,14 @@ public static class CommonExtensions
             });
 
 
-            var identitySection = configuration.GetSection("Identity");
-
-            if (identitySection.Exists() is false)
+            var authSection = openApiSection.GetSection("Auth");
+            if (authSection.Exists() is false)
             {
                 return;
             }
 
-            var authority = identitySection.GetValue<string>("Authority");
-            var scopeDefinitions = identitySection.GetRequiredSection("Scopes").GetChildren();
+            var authority = authSection.GetValue<string>("Authority");
+            var scopeDefinitions = authSection.GetRequiredSection("Scopes").GetChildren();
 
             var authorizationUrl = new Uri($"{authority}/protocol/openid-connect/auth");
             var tokenUrl = new Uri($"{authority}/protocol/openid-connect/token");
