@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TaskFlow.Tasks.Domain.AggregateModels.TaskAggregate;
@@ -13,6 +14,13 @@ internal class TaskEntityTypeConfiguration : IEntityTypeConfiguration<Task>
 
         entity.Property(task => task.Header)
             .IsRequired();
+
+        entity.Property(task => task.Assignee)
+            .HasColumnType("jsonb")
+            .HasConversion(
+                value => JsonSerializer.Serialize(value, JsonSerializerOptions.Default),
+                value => JsonSerializer.Deserialize<AssigneeInfo>(value, JsonSerializerOptions.Default)
+            );
 
         entity.OwnsMany(task => task.History, history =>
             {

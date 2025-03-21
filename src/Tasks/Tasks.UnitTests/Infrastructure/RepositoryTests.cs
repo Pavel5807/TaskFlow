@@ -29,6 +29,43 @@ namespace TaskFlow.Tasks.Tests.Infrastucture
         }
 
         [Fact]
+        public async System.Threading.Tasks.Task AddAsync_WithAssignee_ShouldStoreJsonCorrectly()
+        {
+            // Arrange
+            var task = new Task("Test task");
+            task.AssignTo("testuser", "user@test.com");
+
+            // Act
+            await _repository.AddAsync(task);
+            await _repository.SaveAsync();
+
+            // Assert
+            var savedTask = await _context.Tasks
+                .FirstOrDefaultAsync(t => t.Id == task.Id);
+
+            Assert.NotNull(savedTask?.Assignee);
+            Assert.Equal("user@test.com", savedTask.Assignee.Email);
+            Assert.Equal("testuser", savedTask.Assignee.Username);
+        }
+
+        [Fact]
+        public async System.Threading.Tasks.Task GetByIdAsync_ShouldLoadAssigneeCorrectly()
+        {
+            // Arrange
+            var task = new Task("Test task");
+            task.AssignTo("testuser", "user@test.com");
+            await _context.Tasks.AddAsync(task);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetByIdAsync(task.Id);
+
+            // Assert
+            Assert.NotNull(result?.Assignee);
+            Assert.Equal("user@test.com", result.Assignee.Email);
+        }
+
+        [Fact]
         public async System.Threading.Tasks.Task AddAsync_WhenTaskAdded_ShouldStoreInDatabase()
         {
             // Arrange
@@ -84,7 +121,7 @@ namespace TaskFlow.Tasks.Tests.Infrastucture
             // Arrange
             var taskHeader = "Test Header";
             var task = new Task(taskHeader);
-            
+
             await _repository.AddAsync(task);
 
             // Act

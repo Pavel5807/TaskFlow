@@ -26,10 +26,17 @@ public class UpdateTaskComandHandler : IRequestHandler<UpdateTaskComand, IRespon
             task.EditHeader(request.Header);
         }
 
+        if (request.Assignee is not null)
+        {
+            task.AssignTo(request.Assignee.Username, request.Assignee.Email);
+        }
+
         foreach (var item in request.Items ?? [])
         {
             task.EditItem(item.Id, item.Description);
         }
+
+        await _repository.SaveAsync();
 
         return new OkResponse();                       
     }

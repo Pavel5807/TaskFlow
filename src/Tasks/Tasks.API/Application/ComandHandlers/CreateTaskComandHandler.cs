@@ -17,6 +17,11 @@ public class CreateTaskComandHandler : IRequestHandler<CreateTaskComand, IRespon
     {
         var task = new TaskAggregate.Task(request.Header);
 
+        if (request.Assignee is not null)
+        {
+            task.AssignTo(request.Assignee.Username, request.Assignee.Email);
+        }
+
         foreach (var item in request.Items ?? [])
         {
             task.AddItem(item.Description);

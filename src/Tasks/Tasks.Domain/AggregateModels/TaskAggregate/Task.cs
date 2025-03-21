@@ -12,12 +12,16 @@ public class Task : AggregateRoot
 
     private ICollection<TaskHistory> _history;
 
+    private AssigneeInfo? _assignne;
+
     public Task(string header)
     {
         _header = header;
         _items = [];
         _history = [];
     }
+
+    public AssigneeInfo? Assignee { get => _assignne; private set => _assignne = value; }
 
     public Guid Id { get => _id; private set => _id = value; }
 
@@ -33,6 +37,13 @@ public class Task : AggregateRoot
         _items.Add(item);
 
         AddHistory("Item was added");
+    }
+
+    public void AssignTo(string username, string email)
+    {
+        _assignne = new AssigneeInfo(username, email);
+        
+        AddHistory("Assignne was updated");
     }
 
     public void EditHeader(string header)

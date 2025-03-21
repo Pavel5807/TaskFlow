@@ -20,6 +20,22 @@ public class TaskTests
     }
 
     [Fact]
+    public void AssignTo_ShouldSetAssigneeAndAddHistory()
+    {
+        // Arrange
+        var task = new Task("Test task");
+
+        // Act
+        task.AssignTo("testuser", "user@test.com");
+
+        // Assert
+        Assert.NotNull(task.Assignee);
+        Assert.Equal("user@test.com", task.Assignee.Email);
+        Assert.Equal("testuser", task.Assignee.Username);
+        Assert.Contains(task.History, h => h.Action == "Assignne was updated");
+    }
+
+    [Fact]
     public void AddItem_ShouldAddNewTaskItemAndHistory()
     {
         // Arrange

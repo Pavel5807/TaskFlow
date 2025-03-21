@@ -12,7 +12,7 @@ services:
       - postgres
 
   tasks-api:
-    image: tasks-flow/tasks.api:linux-1.0
+    image: tasks-flow/tasks.api:linux-1.1
     build:
       context: .
       dockerfile: Tasks/Tasks.API/Dockerfile
