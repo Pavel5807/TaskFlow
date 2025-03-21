@@ -1622,8 +1622,8 @@ e4e17d84-b458-4a43-8311-1a6a19d62b16	t	f	broker	0	f	\N	\N	t	\N	f	1739fb5b-3e74-4
 5131c547-ba20-4a29-aef1-0d745a8a1ab1	t	f	broker	0	f	\N	\N	t	\N	f	a3ade43b-1924-4f20-b0e0-9c9b991a47d2	openid-connect	0	f	f	${client_broker}	f	client-secret	\N	\N	\N	t	f	f	f
 33909007-b1ae-48f2-b4e4-86cd51b4c359	t	t	security-admin-console	0	t	\N	/admin/task-flow-realm/console/	f	\N	f	a3ade43b-1924-4f20-b0e0-9c9b991a47d2	openid-connect	0	f	f	${client_security-admin-console}	f	client-secret	${authAdminUrl}	\N	\N	t	f	f	f
 70c94942-e930-4be8-832b-d577631214ac	t	t	admin-cli	0	t	\N	\N	f	\N	f	a3ade43b-1924-4f20-b0e0-9c9b991a47d2	openid-connect	0	f	f	${client_admin-cli}	f	client-secret	\N	\N	\N	f	f	t	f
-6b0c849d-86ba-4ea4-90af-2d17c1c8314f	t	t	tasks-api	0	t	\N		f	http://localhost:5002	f	a3ade43b-1924-4f20-b0e0-9c9b991a47d2	openid-connect	-1	t	f		f	client-secret	http://localhost:5002		\N	f	f	f	f
 5081130b-b692-4acc-8759-2504425efa0a	t	t	tasks-api-swagger	0	f	qgdcKO2LJ8knahIMY8vlnciMjWFvkbhj		f	http://localhost:5002	f	a3ade43b-1924-4f20-b0e0-9c9b991a47d2	openid-connect	-1	t	f		f	client-secret	http://localhost:5002		\N	t	f	t	f
+6b0c849d-86ba-4ea4-90af-2d17c1c8314f	t	t	tasks-api	0	t	\N		f	http://localhost:5002	f	a3ade43b-1924-4f20-b0e0-9c9b991a47d2	openid-connect	-1	t	f		f	client-secret	http://localhost:5002		\N	f	f	f	f
 \.
 
 
@@ -1655,6 +1655,9 @@ d337d6bc-0b6e-47b7-8e2f-2a35c3d9ecaa	pkce.code.challenge.method	S256
 5081130b-b692-4acc-8759-2504425efa0a	oidc.ciba.grant.enabled	false
 5081130b-b692-4acc-8759-2504425efa0a	backchannel.logout.session.required	true
 5081130b-b692-4acc-8759-2504425efa0a	backchannel.logout.revoke.offline.tokens	false
+6b0c849d-86ba-4ea4-90af-2d17c1c8314f	realm_client	false
+6b0c849d-86ba-4ea4-90af-2d17c1c8314f	display.on.consent.screen	false
+6b0c849d-86ba-4ea4-90af-2d17c1c8314f	frontchannel.logout.session.required	true
 \.
 
 
@@ -2644,7 +2647,7 @@ COPY public.migration_model (id, version, update_time) FROM stdin;
 --
 
 COPY public.offline_client_session (user_session_id, client_id, offline_flag, "timestamp", data, client_storage_provider, external_client_id, version) FROM stdin;
-b2c625b1-a7b7-4455-bb9f-8c9b4c17f8d1	74033654-fcf1-4ebe-877d-25e96dcdd914	0	1742417071	{"authMethod":"openid-connect","redirectUri":"http://localhost:5001/admin/master/console/","notes":{"clientId":"74033654-fcf1-4ebe-877d-25e96dcdd914","iss":"http://localhost:5001/realms/master","startedAt":"1742416104","response_type":"code","level-of-authentication":"-1","code_challenge_method":"S256","nonce":"98afc3ca-5bcf-42a6-8b16-5bae6acaa6ef","response_mode":"query","scope":"openid","userSessionStartedAt":"1742416104","redirect_uri":"http://localhost:5001/admin/master/console/","state":"80209393-26f6-4572-98c6-f27dda99a4b6","code_challenge":"qiiE-UJXFgyS-xLlh7YVj4vrewpjGHGwXepWpDLVMZ0"}}	local	local	7
+aaa2ee06-69fd-4b87-a813-c234f2525eac	5081130b-b692-4acc-8759-2504425efa0a	0	1742556964	{"authMethod":"openid-connect","redirectUri":"http://localhost:5002/swagger/oauth2-redirect.html","notes":{"clientId":"5081130b-b692-4acc-8759-2504425efa0a","scope":"openid profile","userSessionStartedAt":"1742556964","iss":"http://localhost:5001/realms/task-flow-realm","startedAt":"1742556964","response_type":"code","level-of-authentication":"-1","code_challenge_method":"S256","redirect_uri":"http://localhost:5002/swagger/oauth2-redirect.html","state":"RnJpIE1hciAyMSAyMDI1IDE0OjM1OjU1IEdNVCswMzAwICjQnNC+0YHQutCy0LAsINGB0YLQsNC90LTQsNGA0YLQvdC+0LUg0LLRgNC10LzRjyk=","code_challenge":"i7XFEzkvukSjJ19l9h5Mv33bew79cg4gG7y5YiHprTc"}}	local	local	0
 \.
 
 
@@ -2653,7 +2656,7 @@ b2c625b1-a7b7-4455-bb9f-8c9b4c17f8d1	74033654-fcf1-4ebe-877d-25e96dcdd914	0	1742
 --
 
 COPY public.offline_user_session (user_session_id, user_id, realm_id, created_on, offline_flag, data, last_session_refresh, broker_session_id, version) FROM stdin;
-b2c625b1-a7b7-4455-bb9f-8c9b4c17f8d1	bb4edd25-3fe3-49ee-9b9c-5b33edd67576	1739fb5b-3e74-44ff-bfea-37693723158e	1742416104	0	{"ipAddress":"172.18.0.1","authMethod":"openid-connect","rememberMe":false,"started":0,"notes":{"KC_DEVICE_NOTE":"eyJpcEFkZHJlc3MiOiIxNzIuMTguMC4xIiwib3MiOiJXaW5kb3dzIiwib3NWZXJzaW9uIjoiMTAiLCJicm93c2VyIjoiQ2hyb21lLzEzNC4wLjAiLCJkZXZpY2UiOiJPdGhlciIsImxhc3RBY2Nlc3MiOjAsIm1vYmlsZSI6ZmFsc2V9","AUTH_TIME":"1742416105","authenticators-completed":"{\\"3abef57b-b912-441c-97f8-13136f39c6e9\\":1742416104}"},"state":"LOGGED_IN"}	1742417071	\N	7
+aaa2ee06-69fd-4b87-a813-c234f2525eac	e41d3fde-0e87-498b-8efc-3d0ef2c6b0c9	a3ade43b-1924-4f20-b0e0-9c9b991a47d2	1742556964	0	{"ipAddress":"172.18.0.1","authMethod":"openid-connect","rememberMe":false,"started":0,"notes":{"KC_DEVICE_NOTE":"eyJpcEFkZHJlc3MiOiIxNzIuMTguMC4xIiwib3MiOiJXaW5kb3dzIiwib3NWZXJzaW9uIjoiMTAiLCJicm93c2VyIjoiQ2hyb21lLzEzNC4wLjAiLCJkZXZpY2UiOiJPdGhlciIsImxhc3RBY2Nlc3MiOjAsIm1vYmlsZSI6ZmFsc2V9","AUTH_TIME":"1742556964","authenticators-completed":"{\\"59814ff9-7d1a-479d-95b8-8f33e7d308d6\\":1742556964}"},"state":"LOGGED_IN"}	1742556964	\N	0
 \.
 
 
@@ -3355,8 +3358,8 @@ d337d6bc-0b6e-47b7-8e2f-2a35c3d9ecaa	/realms/master/account/*
 4fc86ede-2848-4493-bc3e-b175c51fcf68	/realms/task-flow-realm/account/*
 9a245b58-a810-42c8-a40e-f65528d330b3	/realms/task-flow-realm/account/*
 33909007-b1ae-48f2-b4e4-86cd51b4c359	/admin/task-flow-realm/console/*
-6b0c849d-86ba-4ea4-90af-2d17c1c8314f	http://localhost:5002/*
 5081130b-b692-4acc-8759-2504425efa0a	http://localhost:5002/swagger/oauth2-redirect.html
+6b0c849d-86ba-4ea4-90af-2d17c1c8314f	http://localhost:5002/*
 \.
 
 
@@ -3614,8 +3617,8 @@ d1505096-51ce-4d3c-86ea-ded36a7aa46d	a555cf40-2c3e-4724-a30d-7895c965c2d5
 COPY public.web_origins (client_id, value) FROM stdin;
 74033654-fcf1-4ebe-877d-25e96dcdd914	+
 33909007-b1ae-48f2-b4e4-86cd51b4c359	+
-6b0c849d-86ba-4ea4-90af-2d17c1c8314f	http://localhost:5002
 5081130b-b692-4acc-8759-2504425efa0a	http://localhost:5002
+6b0c849d-86ba-4ea4-90af-2d17c1c8314f	http://localhost:5002
 \.
 
 
