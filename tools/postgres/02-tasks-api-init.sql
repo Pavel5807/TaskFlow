@@ -1,3 +1,9 @@
+CREATE DATABASE "Tasks" WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'en_US.utf8';
+
+ALTER DATABASE "Tasks" OWNER TO admin;
+
+\connect "Tasks"
+
 CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
     "MigrationId" character varying(150) NOT NULL,
     "ProductVersion" character varying(32) NOT NULL,
