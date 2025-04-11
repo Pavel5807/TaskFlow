@@ -35,6 +35,7 @@ jobs:
 
       - name: Restore packages
         run: dotnet restore
+        working-directory: src/Tasks/Tasks.API
 
       - name: Build
         run: dotnet build --configuration Release --no-restore
