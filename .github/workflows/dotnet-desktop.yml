@@ -1,0 +1,43 @@
+name: ASP.NET Core CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]  # Ветки, которые триггерят pipeline
+  pull_request:
+    branches: [ main ]
+
+env:
+  DOTNET_VERSION: "8.0.x"  # Версия .NET SDK
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.nuget/packages
+            **/bin
+            **/obj
+          key: ${{ runner.os }}-dotnet-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-dotnet-
+
+      - name: Restore packages
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Run tests
+        run: dotnet test --no-build --configuration Release
