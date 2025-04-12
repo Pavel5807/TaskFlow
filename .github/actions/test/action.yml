@@ -1,0 +1,14 @@
+name: Run .NET Tests
+description: Run tests for a .NET project
+
+inputs:
+  test-project-dir:
+    description: Path to the tests directory
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Run .NET Tests
+      shell: bash
+      run: dotnet tests ${{inputs.project-dir}} --configuration Release --no-build

@@ -1,0 +1,14 @@
+name: Build Action
+description: Build a .NET project
+
+inputs:
+  project-dir:
+    description: Path to the project directory
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Build .NET
+      shell: bash
+      run: dotnet build ${{inputs.project-dir}} --configuration Release

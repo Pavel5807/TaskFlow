@@ -11,14 +11,20 @@ env:
   DOTNET_VERSION: "9.0.x"
 
 jobs:
+  prepare:
+    name: Prepare Environment
+    uses: ./.github/actions/prepare/action.yml
 
   build:
-    uses: ./.github/workflows/build.yml
+    name: Build Tasks.API
+    needs: prepare
+    uses: ./.github/actions/build/action.yml
     with:
       project-dir: src/Tasks/Tasks.API
 
   unit-tests:
-    uses: ./.github/workflows/unit-tests.yml
+    name: Run Unit Tests
     needs: build
+    uses: ./.github/actions/test/action.yml
     with:
-      unit-tests-dir: src/Tasks/Tasks.UnitTests
+      test-project-dir: src/Tasks/Tasks.UnitTests
