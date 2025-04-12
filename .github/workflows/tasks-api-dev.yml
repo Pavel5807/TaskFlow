@@ -13,12 +13,12 @@ env:
 jobs:
   prepare:
     name: Prepare Environment 
-    uses: ./.github/workflows/actions/prepare/action.yml@dev
+    uses: ./.github/workflows/actions/prepare/action.yml
 
   build:
     name: Build Tasks.API
     needs: prepare
-    uses: ./.github/workflows/actions/build/action.yml@dev
+    uses: ./.github/workflows/actions/build/action.yml
     with:
       project-dir: src/Tasks/Tasks.API
 
