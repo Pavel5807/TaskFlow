@@ -63,7 +63,7 @@ jobs:
 
   docker-build:
     name: Build Docker Image
-    need: unit-tests
+    needs: unit-tests
     run-on: ubuntu-latest
     steps:
       - name: Checkout Code
