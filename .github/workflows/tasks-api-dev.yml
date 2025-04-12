@@ -12,9 +12,16 @@ env:
 
 jobs:
   prepare:
-    name: Prepare Environment 
-    uses: ./
-    # uses: ./.github/workflows/actions/prepare/action.yml
+    runs-on: ubuntu-latest
+    name: abc
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/prepare
+
+  # prepare:
+  #   name: Prepare Environment 
+  #   uses: ./github/workflows/action.yml
 
   # build:
   #   name: Build Tasks.API
