@@ -1,0 +1,47 @@
+name: ASP.NET Core CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  DOTNET_VERSION: "9.0.x"
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.nuget/packages
+            **/bin
+            **/obj
+          key: ${{ runner.os }}-dotnet-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-dotnet-
+
+      - name: Restore packages
+        run: dotnet restore
+        working-directory: src/Tasks/Tasks.API
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+        working-directory: src/Tasks/Tasks.API
+
+      - name: Run tests
+        run: dotnet test --no-build --configuration Release
+        working-directory: src/Tasks/Tasks.UnitTests
+

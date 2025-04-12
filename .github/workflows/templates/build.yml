@@ -1,0 +1,25 @@
+name: Build Template
+
+on:
+  workflow_call:
+    inputs:
+      project-dir:
+        type: string
+        required: true
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Build Project
+        working-directory: ${{ inputs.project-dir }}
+        run: dotnet build --configuration Release

@@ -1,0 +1,24 @@
+name: Dev Pipeline
+
+on:
+  push:
+    branches: [dev]
+
+  pull_request:
+    branches: [dev]
+
+env:
+  DOTNET_VERSION: "9.0.x"
+
+jobs:
+
+  build:
+    uses: ./.github/workflows/templates/build.yml
+    with:
+      project-dir: src/Tasks/Tasks.API
+
+  unit-tests:
+    uses: ./.github/workflows/templates/unit-tests.yml
+    needs: build
+    with:
+      unit-tests-dir: src/Tasks/Tasks.UnitTests
