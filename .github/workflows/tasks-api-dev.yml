@@ -15,15 +15,24 @@ jobs:
     runs-on: ubuntu-latest
     name: Prepare Enviroment
     steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/prepare
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: ./.github/actions/prepare
 
   build:
     runs-on: ubuntu-latest
-    name: Build .NET project
+    name: Build Project
     needs: prepare
     steps:
-      - uses: ./.github/actions/build
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Project
+        uses: ./.github/actions/build
+        with:
+          project-dir: /src/Tasks/Tasks.API
     
 
   # prepare:
