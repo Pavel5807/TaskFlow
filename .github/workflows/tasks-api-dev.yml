@@ -13,12 +13,12 @@ env:
 jobs:
 
   build:
-    uses: ./.github/workflows/templates/build.yml
+    uses: ./.github/workflows/build.yml
     with:
       project-dir: src/Tasks/Tasks.API
 
   unit-tests:
-    uses: ./.github/workflows/templates/unit-tests.yml
+    uses: ./.github/workflows/unit-tests.yml
     needs: build
     with:
       unit-tests-dir: src/Tasks/Tasks.UnitTests
