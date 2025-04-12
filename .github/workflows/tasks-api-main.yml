@@ -14,7 +14,7 @@ env:
   DOTNET_VERSION: 9.0.x
   DOCKER_IMAGE_NAME: tasks-api
   DOCKER_DOCKERFILE_PATH: 'Tasks/Tasks.API/Dockerfile'
-  DOCKER_TARFILE_PATH: images/Tasks-api.tar
+  DOCKER_TARFILE_PATH: tasks-api.tar
 
 jobs:
   build:
