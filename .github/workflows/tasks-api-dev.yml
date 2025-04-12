@@ -10,7 +10,7 @@ on:
 env:
   PROJECT_DIR: src/Tasks/Tasks.API
   UNIT_TESTS_DIR: src/Tasks/Tasks.UnitTests
-  DOTNET_VERSION: "9.0.101"
+  DOTNET_VERSION: 9.0.x
 
 jobs:
   build:
