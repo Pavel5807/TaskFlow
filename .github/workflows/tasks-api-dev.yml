@@ -19,9 +19,11 @@ jobs:
       - uses: ./.github/actions/prepare
 
   build:
+    runs-on: ubuntu-latest
     name: Build .NET project
-    uses: ./.github/actions/build
     needs: prepare
+    steps:
+      - uses: ./.github/actions/build
     
 
   # prepare:
