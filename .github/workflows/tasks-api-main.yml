@@ -12,8 +12,9 @@ env:
   PROJECT_SOLUTION_DIR: src/Tasks/Tasks.API
   PROJECT_UNITTESTS_DIR: src/Tasks/Tasks.UnitTests
   DOTNET_VERSION: 9.0.x
+  DOCKER_IMAGE_NAME: tasks-api
   DOCKER_DOCKERFILE_PATH: 'Tasks/Tasks.API/Dockerfile'
-  DOKCER_TARFILE_PATH: images/Tasks.API.tar
+  DOCKER_TARFILE_PATH: images/Tasks-api.tar
 
 jobs:
   build:
@@ -71,10 +72,10 @@ jobs:
 
       - name: Build Docker Image
         working-directory: src
-        run: docker build -f ${{ env.DOCKER_DOCKERFILE_PATH }} -t ${{ env.PROJECT_NAME }}:latest .
+        run: docker build -f ${{ env.DOCKER_DOCKERFILE_PATH }} -t ${{ env.DOCKER_IMAGE_NAME }}:latest .
       
       - name: Save Docker Image
-        run: docker save -o ${{ env.DOKCER_TARFILE_PATH }} ${{ env.PROJECT_NAME }}:latest
+        run: docker save -o ${{ env.DOKCER_TARFILE_PATH }} ${{ env.DOCKER_IMAGE_NAME }}:latest
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
