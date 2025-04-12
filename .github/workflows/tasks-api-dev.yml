@@ -12,7 +12,7 @@ env:
 
 jobs:
   prepare:
-    name: Prepare Environment
+    name: Prepare Environment 
     uses: ./.github/actions/prepare/action.yml@dev
 
   build:
