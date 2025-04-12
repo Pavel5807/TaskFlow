@@ -52,8 +52,8 @@ jobs:
 
       - name: Build Project
         working-directory: ${{ env.UNIT_TESTS_DIR }}
-        run: dotnet build --configuration Release --no-restore --output ./app
+        run: dotnet build --no-restore
 
       - name: Run Unit Tests
         working-directory: ${{ env.UNIT_TESTS_DIR }}
-        run: dotnet test --no-build
+        run: dotnet test --no-build --no-restore
