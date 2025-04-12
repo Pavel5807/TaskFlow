@@ -56,4 +56,4 @@ jobs:
 
       - name: Run Unit Tests
         working-directory: ${{ env.UNIT_TESTS_DIR }}
-        run: dotnet test --configuration Release --no-build
+        run: dotnet test --no-build
