@@ -34,7 +34,7 @@ jobs:
       - name: Build Project
         uses: ./.github/actions/build
         with:
-          project-dir: /src/Tasks/Tasks.API
+          project-dir: src/Tasks/Tasks.API
     
 
   # prepare:
