@@ -14,7 +14,7 @@ env:
 
   DOTNET_VERSION: 9.0.x
   
-  DOCKER_IMAGE_NAME: ${{ format('{0}/{1}', github.repository_owner, 'tasks-api') | lower }}/tasks-api
+  DOCKER_IMAGE_NAME: ${{ toLower(github.repository_owner) }}/tasks-api
   DOCKER_IMAGE_CONTEXT: src
   DOCKER_IMAGE_FILE: src/Tasks/Tasks.API/Dockerfile
   DOCKER_CONTAINER_REGISTRY: ghcr.io
