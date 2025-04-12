@@ -75,10 +75,10 @@ jobs:
         run: docker build -f ${{ env.DOCKER_DOCKERFILE_PATH }} -t ${{ env.DOCKER_IMAGE_NAME }}:latest .
       
       - name: Save Docker Image
-        run: docker save -o ${{ env.DOKCER_TARFILE_PATH }} ${{ env.DOCKER_IMAGE_NAME }}:latest
+        run: docker save -o ${{ env.DOCKER_TARFILE_PATH }} ${{ env.DOCKER_IMAGE_NAME }}:latest
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: docker-image
-          path: ${{ env.DOKCER_TARFILE_PATH }}
+          path: ${{ env.DOCKER_TARFILE_PATH }}
