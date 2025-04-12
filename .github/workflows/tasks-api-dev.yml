@@ -13,18 +13,18 @@ env:
 jobs:
   prepare:
     name: Prepare Environment
-    uses: ./.github/actions/prepare/action.yml
+    uses: ./.github/actions/prepare/action.yml@v1
 
   build:
     name: Build Tasks.API
     needs: prepare
-    uses: ./.github/actions/build/action.yml
+    uses: ./.github/actions/build/action.yml@v1
     with:
       project-dir: src/Tasks/Tasks.API
 
   unit-tests:
     name: Run Unit Tests
     needs: build
-    uses: ./.github/actions/test/action.yml
+    uses: ./.github/actions/test/action.yml@v1
     with:
       test-project-dir: src/Tasks/Tasks.UnitTests

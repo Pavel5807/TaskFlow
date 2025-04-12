@@ -11,4 +11,4 @@ runs:
   steps:
     - name: Run .NET Tests
       shell: bash
-      run: dotnet tests ${{inputs.project-dir}} --configuration Release --no-build
+      run: dotnet test ${{inputs.project-dir}} --configuration Release --no-build
