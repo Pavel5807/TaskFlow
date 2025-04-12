@@ -15,12 +15,12 @@ jobs:
     name: Prepare Environment 
     uses: ./.github/actions/prepare/action.yml
 
-  # build:
-  #   name: Build Tasks.API
-  #   needs: prepare
-  #   uses: ./.github/actions/build/action.yml
-  #   with:
-  #     project-dir: src/Tasks/Tasks.API
+  build:
+    name: Build Tasks.API
+    needs: prepare
+    uses: ./.github/actions/build/action.yml
+    with:
+      project-dir: src/Tasks/Tasks.API
 
   # unit-tests:
   #   name: Run Unit Tests
