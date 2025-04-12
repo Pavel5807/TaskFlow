@@ -11,15 +11,12 @@ env:
   DOTNET_VERSION: "9.0.x"
 
 jobs:
-  checkout:
+  prepare:
     runs-on: ubuntu-latest
+    name: Prepare Enviroment
     steps:
       - uses: actions/checkout@v4
-
-  prepare:
-    name: Prepare Enviroment
-    needs: checkout
-    uses: ./.github/actions/prepare
+      - uses: ./.github/actions/prepare
 
   build:
     name: Build .NET project
