@@ -8,49 +8,43 @@ on:
     branches: [dev]
 
 env:
+  PROJECT_DIR: src/Tasks/Tasks.API
+  UNIT_TESTS_DIR: src/Tasks/Tasks.UnitTests
   DOTNET_VERSION: "9.0.101"
 
 jobs:
-  prepare:
+  build:
+    name: Build Project
     runs-on: ubuntu-latest
-    name: Prepare Enviroment
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-  
-  build:
-    runs-on: ubuntu-latest
-    name: Build Project
-    needs: prepare
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
 
       - name: Build Project
-        uses: ./.github/actions/build
+        working-directory: ${{ env.PROJECT_DIR }}
+        run: dotnet build --configuration Release --no-restore --output ./app
+
+  unit-tests:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
         with:
-          project-dir: src/Tasks/Tasks.API
-    
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      
+      - name: Build Project
+        working-directory: ${{ env.UNIT_TESTS_DIR }}
+        run: dotnet build --configuration Release --no-restore
 
-  # prepare:
-  #   name: Prepare Environment 
-  #   uses: ./github/workflows/action.yml
-
-  # build:
-  #   name: Build Tasks.API
-  #   needs: prepare
-  #   uses: ./.github/workflows/actions/build/action.yml
-  #   with:
-  #     project-dir: src/Tasks/Tasks.API
-
-  # unit-tests:
-  #   name: Run Unit Tests
-  #   needs: build
-  #   uses: ./.github/workflows/actions/test/action.yml
-  #   with:
-  #     test-project-dir: src/Tasks/Tasks.UnitTests
+      - name: Run Unit Tests
+        working-directory: ${{ env.UNIT_TESTS_DIR }}
+        run: dotnet test --configuration Release --no-build
