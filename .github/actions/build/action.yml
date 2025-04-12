@@ -11,4 +11,4 @@ runs:
   steps:
     - name: Build .NET
       shell: bash
-      run: dotnet build ${{inputs.project-dir}} --configuration Release
+      run: dotnet build ${{inputs.project-dir}}
